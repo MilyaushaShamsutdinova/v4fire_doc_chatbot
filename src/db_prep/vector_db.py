@@ -1,16 +1,21 @@
 import chromadb
 import hashlib
 from sentence_transformers import SentenceTransformer
+import os
 
 
 class VectorDB:
-    def __init__(self, db_name: str, persist_dir: str = "./database", embedder_name: str = "all-mpnet-base-v2"):
+    def __init__(self, db_name: str,
+                #  persist_dir: str = os.path.join(os.getcwd(), "database"),
+                 persist_dir: str = os.path.join(os.path.abspath(os.path.dirname(__file__)), "../..", "database"),
+                 embedder_name: str = "all-mpnet-base-v2"):
+        
         self.client = chromadb.Client(chromadb.config.Settings(persist_directory=persist_dir))
         self.model = SentenceTransformer(embedder_name)
         
-        for collection in self.client.list_collections():
-            if collection.name == db_name:
-                self.client.delete_collection(name=db_name)
+        # for collection in self.client.list_collections():
+        #     if collection.name == db_name:
+        #         self.client.delete_collection(name=db_name)
         self.collection = self.client.get_or_create_collection(name=db_name)
 
     def _embed_text(self, text: str):
