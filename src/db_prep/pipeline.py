@@ -1,19 +1,15 @@
 from fetch_data import fetch_github_docs
 from vector_db import VectorDB
-import time
 
 
-db = VectorDB("docs")
+def populate_db(db_name: str):
+    db = VectorDB(db_name)
+    repo_owner = "V4Fire"
+    repos = ["Client", "Core"]
 
-repo_owner = "V4Fire"
-repos = ["Client", "Core"]
+    for repo in repos:
+        docs = fetch_github_docs(repo_owner, repo)
+        db.add(docs)
 
-s = time.time()
-for repo in repos:
-    print(len(db))
-    docs = fetch_github_docs(repo_owner, repo)
-    db.add(docs)
-e = time.time()
 
-print(len(db))
-print(e-s)
+populate_db(db_name="docs")

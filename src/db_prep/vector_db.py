@@ -2,20 +2,21 @@ import chromadb
 import hashlib
 from sentence_transformers import SentenceTransformer
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class VectorDB:
     def __init__(self, db_name: str,
-                #  persist_dir: str = os.path.join(os.getcwd(), "database"),
-                 persist_dir: str = os.path.join(os.path.abspath(os.path.dirname(__file__)), "../..", "database"),
+                 persist_dir: str = os.path.join(os.getenv("PROJECT_DIR"), "database"),
                  embedder_name: str = "all-mpnet-base-v2"):
         
-        self.client = chromadb.Client(chromadb.config.Settings(persist_directory=persist_dir))
-        self.model = SentenceTransformer(embedder_name)
+        if not os.path.exists(persist_dir):
+            os.makedirs(persist_dir)
         
-        # for collection in self.client.list_collections():
-        #     if collection.name == db_name:
-        #         self.client.delete_collection(name=db_name)
+        self.client = chromadb.PersistentClient(path=persist_dir)
+        self.model = SentenceTransformer(embedder_name)
         self.collection = self.client.get_or_create_collection(name=db_name)
 
     def _embed_text(self, text: str):
@@ -52,11 +53,10 @@ class VectorDB:
         results = self.collection.query(
             query_embeddings=[query_embedding],
             n_results=n_results,
-            include=["embeddings", "metadatas", "documents"],
+            include=["embeddings", "metadatas", "documents", "distances"],
         )
         return results
     
     def __len__(self):
         return self.collection.count()
-
     
