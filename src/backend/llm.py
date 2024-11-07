@@ -19,6 +19,7 @@ class GeminiAI:
             If an exact match isn't found, provide general guidance and suggest related sections.
             Explain features clearly, offering examples when relevant.
             Keep responses concise, link to documentation for further details, and avoid jargon unless explained.
+            Format the response in Telegram message formatting.
 
             User request: {request}
 
