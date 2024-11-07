@@ -6,3 +6,4 @@ dotenv
 os
 hashlib
 sentence_transformers
+google-generativeai
