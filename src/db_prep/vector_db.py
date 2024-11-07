@@ -9,7 +9,8 @@ load_dotenv()
 
 class VectorDB:
     def __init__(self, db_name: str,
-                 persist_dir: str = os.path.join(os.getenv("PROJECT_DIR"), "database"),
+                #  persist_dir: str = os.path.join(os.getenv("PROJECT_DIR"), "database"),
+                 persist_dir: str = os.path.join(os.getcwd(), "database"),
                  embedder_name: str = "all-mpnet-base-v2"):
         
         if not os.path.exists(persist_dir):

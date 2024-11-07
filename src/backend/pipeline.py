@@ -1,5 +1,5 @@
-from retrieval import retrieve_relevant
-from llm import GeminiAI
+from src.backend.retrieval import retrieve_relevant
+from src.backend.llm import GeminiAI
 
 
 gemini = GeminiAI()

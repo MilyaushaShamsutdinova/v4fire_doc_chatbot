@@ -1,5 +1,5 @@
-from fetch_data import fetch_github_docs
-from vector_db import VectorDB
+from src.db_prep.fetch_data import fetch_github_docs
+from src.db_prep.vector_db import VectorDB
 
 
 def populate_db(db_name: str):
