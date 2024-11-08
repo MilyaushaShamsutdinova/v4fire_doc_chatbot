@@ -61,3 +61,6 @@ class VectorDB:
     def __len__(self):
         return self.collection.count()
     
+    def clear_collection(self, collection_name: str):
+        self.client.delete_collection(name=collection_name)
+    
