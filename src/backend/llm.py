@@ -10,7 +10,23 @@ class GeminiAI:
         genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
         self.model = genai.GenerativeModel(model_name="gemini-1.5-flash")
     
-    def get_response(self, request, content):
+    def get_response(self, request: str, content: str):
+        """
+        Generates a response for a given user request using relevant documentation content.
+
+        This method constructs a prompt containing the user request and relevant documentation
+        data, and sends it to the generative model to generate a response. The response is
+        formatted specifically for Telegram, adhering to guidelines such as bolding important
+        concepts, italicizing emphasis, and using monospaced text for component names and code
+        snippets.
+
+        Args:
+            request (str): The user's query or request.
+            content (str): The relevant documentation data to assist in generating the response.
+
+        Returns:
+            str: The generated response text formatted for Telegram.
+        """
         time.sleep(5)
         prompt = f"""
             You are an expert assistant for the V4Fire framework, designed to help users by analysing relevant documentation content.
@@ -36,3 +52,6 @@ class GeminiAI:
         """
         response = self.model.generate_content(prompt)
         return response.text
+    
+
+
