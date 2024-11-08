@@ -27,7 +27,7 @@ class GeminiAI:
         Returns:
             str: The generated response text formatted for Telegram.
         """
-        time.sleep(5)
+        # time.sleep(5)
         prompt = f"""
             You are an expert assistant for the V4Fire framework, designed to help users by analysing relevant documentation content.
 
@@ -38,7 +38,7 @@ class GeminiAI:
 
             Format the responses for Telegram using these rules:
             1. Bold important concepts like subheaders using double asterisks: **text**
-            2. Italicize emphasis using one asterisks: *text*
+            2. Italicize emphasis using double underscore: __text__
             3. Use monospaced text for names of components: `text`
             4. Use multiline monospaced text for code snippets: ```text```
             5. Do not combine formatting functions!! For example, text cannot be bold and monospaced at the same time!
