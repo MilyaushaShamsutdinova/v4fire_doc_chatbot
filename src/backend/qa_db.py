@@ -1,4 +1,4 @@
-from src.db_prep.vector_db import VectorDB
+from src.db_prep_with_raptor.vector_db import VectorDB
 
 
 def is_request_in_db(request: str):
@@ -14,7 +14,6 @@ def is_request_in_db(request: str):
 def get_response_from_db(request: str):
     db = VectorDB(db_name="qa_db")
     results = db.query(query_text=request, n_results=1)
-    # return results
     return results['metadatas'][0][0]['response']
 
 

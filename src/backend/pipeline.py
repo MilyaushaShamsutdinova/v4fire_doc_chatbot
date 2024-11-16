@@ -1,23 +1,23 @@
-from src.backend.retrieval import retrieve_relevant
+from src.backend.retrieval import retrieve_relevant_docs
 from src.backend.llm import GeminiAI
-from src.backend.qa_db import is_request_in_db, get_response_from_db, store_in_db
+from src.backend.qa_db import *
 
 
 gemini = GeminiAI()
 
 def get_response(request: str):
-
-    # check if request already has a response in db
     if is_request_in_db(request):
         response = get_response_from_db(request)
         return response
 
-    rel_docs = retrieve_relevant(request)
-    content = " ".join(rel_docs)
-    response = gemini.get_response(request, content)
+    relevant_docs = retrieve_relevant_docs(request)
 
-    # store request and response in db
-    store_in_db(request, response)
+    if not relevant_docs:
+        response = "I cannot answer this question. But feel free to ask any question related to V4Fire!"
+    else:
+        content = " ".join(relevant_docs)
+        response = gemini.get_response(request, content)
+        store_in_db(request, response)
 
     return response
 

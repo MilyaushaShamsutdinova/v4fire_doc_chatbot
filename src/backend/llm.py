@@ -1,4 +1,5 @@
 import google.generativeai as genai
+from google.api_core import retry
 from dotenv import load_dotenv
 import os
 import time
@@ -32,7 +33,7 @@ class GeminiAI:
             You are an expert assistant for the V4Fire framework, designed to help users by analysing relevant documentation content.
 
             Answer questions using retrieved documentation data.
-            If an exact match isn't found, provide general guidance and suggest related sections.
+            If user's question or ask is not related to V4Fire framework or if provided documents is not enough to answer the question, politely refuse to answer it!
             Explain features clearly, offering examples when relevant.
             Keep responses concise, link to documentation for further details, and avoid jargon unless explained.
 
@@ -53,5 +54,14 @@ class GeminiAI:
         response = self.model.generate_content(prompt)
         return response.text
     
-
+    def get_summary(self, content: str):
+        try:
+            time.sleep(10)
+            prompt = f"Summarize the following text: {content}"
+            response = self.model.generate_content(prompt, request_options={'retry': retry.Retry()})
+            # print("---", response.text[:150])
+            return response.text
+        except Exception as e:
+            print(e)
+            return self.get_summary(content)
 
