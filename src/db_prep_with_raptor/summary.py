@@ -40,14 +40,3 @@ def store_summaries(summaries, level):
     ]
     db.add(summaries)
 
-
-def populate_db_with_summaries(up_to_level: int=2):
-    for lvl in range(up_to_level):
-        clusters = cluster_documents(level=lvl)
-        print(f"Num of clusters in docs_{lvl}: {len(clusters)}")
-
-        summaries = generate_summary(clusters)
-        print(f"{len(summaries)} summaries (docs_{lvl}) generated")
-
-        store_summaries(summaries, level=lvl+1)
-        print(f"Summaries succesfully saved in docs_{lvl+1}")
