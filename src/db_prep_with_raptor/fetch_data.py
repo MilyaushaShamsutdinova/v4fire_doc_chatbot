@@ -23,7 +23,7 @@ def fetch_github_docs(repo_owner, repo_name):
             elif item["type"] == "file" and item["name"].endswith(".md") and item["name"] == "README.md":
                 file_content = requests.get(item["download_url"], headers=headers).text
                 url = f"https://github.com/{repo_owner}/{repo_name}/tree/master/{item['path']}"
-                docs.append({"metadata": {"url": url}, "document": file_content})
+                docs.append({"metadata": {"url": url, "level": 0}, "document": file_content})
 
         return docs
 

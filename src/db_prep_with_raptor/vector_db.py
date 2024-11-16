@@ -63,4 +63,8 @@ class VectorDB:
     
     def clear_collection(self, collection_name: str):
         self.client.delete_collection(name=collection_name)
+
+    def get_docs(self):
+        documents = self.collection.get(include=['embeddings', 'documents', 'metadatas'])
+        return documents
     
