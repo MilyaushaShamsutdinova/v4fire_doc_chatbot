@@ -9,3 +9,5 @@ sentence_transformers
 google-generativeai
 pyTelegramBotAPI
 
+spacy
+neo4j
