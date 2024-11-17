@@ -17,7 +17,6 @@ pip install -e .
 3. Create .env and define the following variables 
 
 > GITHUB_TOKEN \
-> PROJECT_DIR \
 > GOOGLE_API_KEY \
 > BOT_TOKEN
 
