@@ -1,0 +1,12 @@
+services:
+  chatbot:
+    build: .
+    container_name: chatbot
+    env_file: .env
+    restart: always
+    networks:
+      - bot_network
+
+networks:
+  bot_network:
+    driver: bridge
