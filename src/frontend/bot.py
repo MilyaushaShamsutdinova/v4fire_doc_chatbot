@@ -25,11 +25,6 @@ def format_text(text):
     return text.strip()
 
 
-def escape_markdown(text):
-    escape_chars = r'~>#|'
-    return re.sub(f"([{re.escape(escape_chars)}])", r"\\\1", text)
-
-
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     bot.send_message(message.chat.id, f"Hi, {message.from_user.first_name}!\nI am V4Fire assistant, i can help you to write components\nAsk any question related to V4Fire :)")
@@ -38,12 +33,10 @@ def handle_start(message):
 def handle_message(message):
     request = message.text
     response = get_response(request)
-    # print(response)
-    
-    # response = escape_markdown(response)
+        
     bot.send_message(message.chat.id,
                      response,
-                    #  parse_mode='Markdown'
+                     parse_mode='Markdown'
                      )
 
 def run_bot():
