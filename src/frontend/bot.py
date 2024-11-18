@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import re
 from src.backend.pipeline import get_response
 
+
 load_dotenv()
 
 BOT_TOKEN = os.getenv('BOT_TOKEN')
@@ -27,7 +28,7 @@ def format_text(text):
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    bot.send_message(message.chat.id, f"Hi, {message.from_user.first_name}!\nI am V4Fire assistant, i can help you to write components\nAsk any question related to V4Fire :)")
+    bot.send_message(message.chat.id, f"Hi, {message.from_user.first_name}!\nI am V4Fire assistant, I can help you to write components.\nAsk any question related to V4Fire :)")
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):

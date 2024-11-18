@@ -36,46 +36,31 @@ def estimate_query_complexity(query):
 
 
 def retrieve_relevant_docs(query: str) -> list[str]:
-    complexity_level = estimate_query_complexity(query)
+    try:
+        complexity_level = estimate_query_complexity(query)
 
-    if complexity_level == 0:
-        db = db_docs_0
-    elif complexity_level == 1:
-        db = db_docs_1
-    else:
-        db = db_docs_2
+        if complexity_level == 0:
+            db = db_docs_0
+        elif complexity_level == 1:
+            db = db_docs_1
+        else:
+            db = db_docs_2
 
-    results = db.query(query_text=query, n_results=5)
-    distances = results["distances"][0]
+        results = db.query(query_text=query, n_results=5)
+        distances = results["distances"][0]
+        relevant_docs = []
 
-    # relevant_docs = [
-    #     results["documents"][0][i]
-    #     for i in range(len(distances))
-    #     if distances[i] < DISTANCE_THRESHOLD
-    # ]
-    relevant_docs = []
+        for i in range(len(distances)):
+            doc = results['documents'][0][i]
+            metadata = results['metadatas'][0][i]
 
-    for i in range(len(distances)):
-        doc = results['documents'][0][i]
-        metadata = results['metadatas'][0][i]
-
-        if distances[i] < DISTANCE_THRESHOLD:
-            if 'url' in metadata:
-                relevant_docs.append(f"{doc}\nReference: {metadata['url']}")
-            else:
-                relevant_docs.append(f"{doc}")
-
-    # print(relevant_docs)
-
-    return relevant_docs
-
-
-# query = "why did Marceline's dad eat her fries?"
-# query = "How does the dependency injection work in V4Fire?"
-# query = "what is v4fire?"
-# query = "write component that creates button based on icon?"
-# query = "how to write script for parsing data in python?"
-
-# retrieved_docs = retrieve_relevant_docs(query)
-# print(retrieved_docs)
-# print(len(retrieved_docs))
+            if distances[i] < DISTANCE_THRESHOLD:
+                if 'url' in metadata:
+                    relevant_docs.append(f"{doc}\nReference: {metadata['url']}")
+                else:
+                    relevant_docs.append(f"{doc}")
+        return relevant_docs
+    
+    except Exception as e:
+        print(e)
+        return None

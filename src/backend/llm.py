@@ -28,14 +28,14 @@ class GeminiAI:
         Returns:
             str: The generated response text formatted for Telegram.
         """
-        # time.sleep(5)
         prompt = f"""
             You are an expert assistant for the V4Fire framework, designed to help users by analysing relevant documentation content.
 
             Answer questions using retrieved documentation data.
             If user's question or ask is not related to V4Fire framework or if provided documents is not enough to answer the question, politely refuse to answer it!
             Explain features clearly, offering examples when relevant.
-            Keep responses concise, link to documentation for further details if link provided in context (do not mention references if link does not provided), and avoid jargon unless explained.
+            Reference to the link to documentation for further details if link provided in context (do not mention references if link does not provided), and avoid jargon unless explained.
+            Answer concisely. Do not provide extra explanation if not asked.
 
             Format the responses for Telegram using the following syntax in your response:
             1. Bold important concepts like subheaders using single asterisks: *text*
@@ -52,13 +52,39 @@ class GeminiAI:
             Relevant documentation data:
             {content}
         """
-        response = self.model.generate_content(prompt)
-        return response.text
+        try:
+            response = self.model.generate_content(prompt)
+            return response.text
+        except Exception as e:
+            print(e)
+            return self.get_response(request=request, content=content)
     
     def get_summary(self, content: str):
         try:
             time.sleep(10)
             prompt = f"Summarize the following text: {content}"
+            response = self.model.generate_content(prompt, request_options={'retry': retry.Retry()})
+            return response.text
+        except Exception as e:
+            print(e)
+            return self.get_summary(content)
+        
+    def generate_qa(self, content: str):
+        try:
+            time.sleep(10)
+            prompt = f"""Generate question based on content provided and answer it as you think is th most correct based on the content.
+            The content is a part of documentation V4Fire framework.
+            Question is desired to be practically oriented or about some explanation.
+
+            You must respond with json structure looking like that:
+            {{
+                "question": "generated question",
+                "answer": "generated answer",
+            }}
+            Return ONLY that json structure!
+
+            Content: {content}
+            """
             response = self.model.generate_content(prompt, request_options={'retry': retry.Retry()})
             return response.text
         except Exception as e:
