@@ -9,7 +9,7 @@ COPY ./setup.py /app/setup.py
 COPY ./requirements.txt /app/requirements.txt
 COPY ./database /app/database
 COPY ./src /app/src
-# COPY .env /app/.env
+COPY .env /app/.env
 
 RUN pip install --upgrade pip \
     && pip install -r /app/requirements.txt \
