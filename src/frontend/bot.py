@@ -3,6 +3,7 @@ import telebot
 from dotenv import load_dotenv
 import re
 from src.backend.pipeline import get_response
+import time
 
 
 load_dotenv()
@@ -41,4 +42,10 @@ def handle_message(message):
                      )
 
 def run_bot():
-    bot.infinity_polling()
+    while True:
+        try:
+            bot.polling(non_stop=True, interval=0)
+        except Exception as e:
+            print(e)
+            time.sleep(5)
+            continue
